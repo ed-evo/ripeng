@@ -1,7 +1,7 @@
 import colors from 'vuetify/es5/util/colors'
 
 const routerBase = process.env.DEPLOY_ENV === 'GH_PAGES' ? {
-  base: process.env.NODE_ENV === 'production' ? '/ripmath-evo/' : '/'
+  base: process.env.NODE_ENV === 'production' ? '/ripeng/' : '/'
 }: {}
 
 export default {
