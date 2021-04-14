@@ -17,7 +17,7 @@ branches:
 
 install:
   - yarn
-  - yarn generate
+  - yarn generate:gh-pages
 
 script:
   - echo "Skipping tests"

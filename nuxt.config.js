@@ -1,11 +1,19 @@
 import colors from 'vuetify/es5/util/colors'
 
+const routerBase = process.env.DEPLOY_ENV === 'GH_PAGES' ? {
+  base: process.env.NODE_ENV === 'production' ? '/ripmath-evo/' : '/'
+}: {}
+
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
 
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
+
+  router: {
+    ...routerBase
+  },
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
