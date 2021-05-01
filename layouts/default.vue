@@ -98,8 +98,8 @@ export default {
       items: [
         {
           icon: 'mdi-apps',
-          title: 'Welcome',
-          to: '/'
+          title: 'Vocaboli',
+          to: '/vocaboli'
         },
         {
           icon: 'mdi-chart-bubble',

@@ -35,7 +35,7 @@ import { defineComponent } from '@vue/composition-api'
 export default defineComponent({
   data () {
     return {
-      verbi //: shuffle(verbi)
+      verbi : shuffle(verbi)
     }
   },
   methods: {
