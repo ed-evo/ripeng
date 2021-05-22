@@ -105,6 +105,11 @@ export default {
           icon: 'mdi-chart-bubble',
           title: 'Verbi',
           to: '/verbi'
+        },
+        { 
+          icon: 'mdi-apps',
+          title: 'Emozioni',
+          to: '/emozioni'
         }
       ],
       miniVariant: false,
