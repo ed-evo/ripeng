@@ -106,10 +106,15 @@ export default {
           title: 'Verbi',
           to: '/verbi'
         },
-        { 
+        {
           icon: 'mdi-apps',
           title: 'Emozioni',
           to: '/emozioni'
+        },
+        {
+          icon: 'mdi-apps',
+          title: 'Vacanza',
+          to: '/vacanza'
         }
       ],
       miniVariant: false,
