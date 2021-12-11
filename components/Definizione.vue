@@ -12,7 +12,7 @@ export default defineComponent({
   props: ['def'],
   computed: {
     inglese (): string {
-      return this.def ? this.def.eng : ''
+      return this.def ? this.def.en : ''
     },
     italiano (): string {
       return this.def ? this.def.it : ''

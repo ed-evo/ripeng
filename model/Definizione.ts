@@ -1,3 +1,3 @@
 export default class Definizione {
-  constructor (public eng: string, public it: string) {}
+  constructor (public en: string, public it: string) {}
 }

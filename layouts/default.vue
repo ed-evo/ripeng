@@ -9,19 +9,31 @@
     >
       <v-list>
         <v-list-item
-          v-for="(item, i) in items"
-          :key="i"
-          :to="item.to"
+          to="/verbi"
           router
           exact
         >
           <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
+            <v-icon>mdi-apps</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title v-text="item.title" />
+            <v-list-item-title>Verbi</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-group
+          :value="true"
+          prepend-icon="mdi-chart-bubble"
+        >
+          <template v-slot:activator>
+            <v-list-item-title>Vocaboli</v-list-item-title>
+          </template>
+          <v-list-item
+            v-for="(value, name) in vocaboli" :key="name"
+            :to="`/vocaboli/${name}`"
+          >
+            <v-list-item-title v-text="name"></v-list-item-title>
+          </v-list-item>
+        </v-list-group>
       </v-list>
     </v-navigation-drawer>
     <v-app-bar
@@ -89,34 +101,14 @@
 </template>
 
 <script>
+import vocaboli from '../data/vocaboli/index'
 export default {
   data () {
     return {
       clipped: false,
       drawer: false,
       fixed: false,
-      items: [
-        {
-          icon: 'mdi-apps',
-          title: 'Vocaboli',
-          to: '/vocaboli'
-        },
-        {
-          icon: 'mdi-chart-bubble',
-          title: 'Verbi',
-          to: '/verbi'
-        },
-        {
-          icon: 'mdi-apps',
-          title: 'Emozioni',
-          to: '/emozioni'
-        },
-        {
-          icon: 'mdi-apps',
-          title: 'Vacanza',
-          to: '/vacanza'
-        }
-      ],
+      vocaboli,
       miniVariant: false,
       right: true,
       rightDrawer: false,
