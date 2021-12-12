@@ -57,7 +57,8 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/content
-    '@nuxt/content'
+    '@nuxt/content',
+    '@nuxtjs/composition-api/module'
   ],
 
   // Content module configuration: https://go.nuxtjs.dev/config-content

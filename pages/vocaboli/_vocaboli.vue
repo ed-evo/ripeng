@@ -1,7 +1,7 @@
 <template>
     <v-row>
     <v-col class="text-center">
-      <v-card>
+      <!-- <v-card>
         <v-card-actions>
           <definizione
             :def="definizione"
@@ -12,12 +12,23 @@
             avanti
           </v-btn>
         </v-card-actions>
-      </v-card>
+      </v-card> -->
       <definizione
+        ref="definizioni"
         v-for="def in defs"
         :key="def.en"
         :def="def"
+        :bus="$refs.done"
       ></definizione>
+      <v-btn
+        ref="done"
+        block
+        depressed
+        elevation="7"
+        fab
+        rounded
+        @click="validate"
+      >Done</v-btn>
     </v-col>
   </v-row>
 </template>
@@ -54,6 +65,9 @@ export default defineComponent({
     refreshDef () {
       this.value = '';
       this.definizione = sample(vocaboli[this.$route.params['vocaboli']])
+    },
+    validate () {
+      this.$emit('validate');
     }
   }
 })
