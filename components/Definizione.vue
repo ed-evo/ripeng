@@ -14,7 +14,6 @@ import { defineComponent } from '@vue/composition-api';
 
 export default defineComponent({
   setup () {
-    console.log(arguments)
     return { $v: useVuelidate({$lazy: true}) }
   },
   props: ['def'],
@@ -32,7 +31,6 @@ export default defineComponent({
     }
   },
   validations () {
-    console.log(this.inglese)
     return {
       input: { sameAs: sameAs(this.inglese) }
     }
