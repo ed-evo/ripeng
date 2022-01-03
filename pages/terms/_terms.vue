@@ -37,7 +37,7 @@ export default defineComponent({
     } as { terms: Def[] }
   },
   async mounted() {
-    const page: any = await this.$content(this.$route.path).only('terms').fetch();
+    const page: any = await this.$content(`terms/${this.$route.params.terms}`).only('terms').fetch();
     this.terms = shuffle(page.terms)
   },
   methods: {
