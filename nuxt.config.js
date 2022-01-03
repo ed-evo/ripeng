@@ -1,11 +1,8 @@
 import colors from 'vuetify/es5/util/colors'
-import vocaboli from './data/vocaboli'
 
 const routerBase = process.env.DEPLOY_ENV === 'GH_PAGES' ? {
   base: process.env.NODE_ENV === 'production' ? '/ripeng/' : '/'
 }: {}
-
-const vocaboliPages = Object.keys(vocaboli).map(vocabolo => `/vocaboli/${vocabolo}`)
 
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
@@ -62,7 +59,9 @@ export default {
   ],
 
   // Content module configuration: https://go.nuxtjs.dev/config-content
-  content: {},
+  content: {
+    apiPrefix: 'content-api'
+  },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
@@ -87,6 +86,10 @@ export default {
   build: {
   },
   generate: {
-    routes: [...vocaboliPages]
+    async routes () {
+      const { $content } = require('@nuxt/content')
+      const files = $content({ deep: true }).only('path').fetch()
+      return (await files).map(file => file.path)
+    }
   }
 }

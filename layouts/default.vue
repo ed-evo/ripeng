@@ -25,13 +25,13 @@
           prepend-icon="mdi-chart-bubble"
         >
           <template v-slot:activator>
-            <v-list-item-title>Vocaboli</v-list-item-title>
+            <v-list-item-title>Terms</v-list-item-title>
           </template>
           <v-list-item
-            v-for="(value, name) in vocaboli" :key="name"
-            :to="`/vocaboli/${name}`"
+            v-for="term in terms" :key="term.path"
+            :to="`${term.path}`"
           >
-            <v-list-item-title v-text="name"></v-list-item-title>
+            <v-list-item-title v-text="term.title"></v-list-item-title>
           </v-list-item>
         </v-list-group>
       </v-list>
@@ -101,19 +101,21 @@
 </template>
 
 <script>
-import vocaboli from '../data/vocaboli/index'
 export default {
   data () {
     return {
       clipped: false,
       drawer: false,
       fixed: false,
-      vocaboli,
       miniVariant: false,
       right: true,
       rightDrawer: false,
-      title: 'Ripeng: Ripasso di inglese'
+      title: 'Ripeng: Ripasso di inglese',
+      terms: []
     }
+  },
+  async mounted () {
+    this.terms = await this.$content('terms').fetch()
   }
 }
 </script>
