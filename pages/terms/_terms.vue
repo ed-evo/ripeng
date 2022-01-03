@@ -36,7 +36,7 @@ export default defineComponent({
       terms: []
     } as { terms: Def[] }
   },
-  async mouted() {
+  async mounted() {
     const page: any = await this.$content(this.$route.path).only('terms').fetch();
     this.terms = shuffle(page.terms)
   },
