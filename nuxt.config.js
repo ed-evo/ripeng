@@ -86,10 +86,10 @@ export default {
   build: {
   },
   generate: {
-    async routes () {
-      const { $content } = require('@nuxt/content')
-      const files = $content({ deep: true }).only('path').fetch()
-      return (await files).map(file => file.path)
-    }
+    // async routes () {
+    //   const { $content } = require('@nuxt/content')
+    //   const files = $content({ deep: true }).only('path').fetch()
+    //   return (await files).map(file => file.path)
+    // }
   }
 }

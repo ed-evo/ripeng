@@ -20,20 +20,18 @@
             <v-list-item-title>Verbi</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-group
-          :value="true"
-          prepend-icon="mdi-chart-bubble"
+        <v-list-item
+          to="/terms"
+          router
+          exact
         >
-          <template v-slot:activator>
+          <v-list-item-action>
+            <v-icon>mdi-chart-bubble</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
             <v-list-item-title>Terms</v-list-item-title>
-          </template>
-          <v-list-item
-            v-for="term in terms" :key="term.path"
-            :to="`${term.path}`"
-          >
-            <v-list-item-title v-text="term.title"></v-list-item-title>
-          </v-list-item>
-        </v-list-group>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
     <v-app-bar
@@ -110,12 +108,8 @@ export default {
       miniVariant: false,
       right: true,
       rightDrawer: false,
-      title: 'Ripeng: Ripasso di inglese',
-      terms: []
+      title: 'Ripeng: Ripasso di inglese'
     }
-  },
-  async mounted () {
-    this.terms = await this.$content('terms').fetch()
   }
 }
 </script>
