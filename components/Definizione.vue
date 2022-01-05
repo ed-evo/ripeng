@@ -46,11 +46,12 @@ export default defineComponent({
     }
   },
   mounted () {
-    this.$parent.$on('validate', this.$v.$validate)
+    this.$parent.$on('validate', this.validate)
   },
   methods: {
-    check (value: string): boolean {
-      return value ? value === this.inglese : true
+    validate () {
+      this.$v.$validate()
+      this.$emit("validated", this.$v.$error)
     }
   }
 })
