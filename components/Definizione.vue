@@ -9,14 +9,21 @@
 
 <script lang="ts">
 import useVuelidate from '@vuelidate/core';
-import { sameAs } from '@vuelidate/validators';
+import { helpers, required } from '@vuelidate/validators';
 import { defineComponent } from '@vue/composition-api';
 
 export default defineComponent({
-  setup () {
-    return { $v: useVuelidate({$lazy: true}) }
+  setup (props) {
+    const def = props.def
+    let match = def?.en ? helpers.regex(new RegExp(`^${def.en}$`, 'i')) : () => false;
+    return {
+      sameAs: (value: any) => helpers.req(value) && match(value.trim().replaceAll(/\s+/g, ' ')),
+      $v: useVuelidate({$lazy: true})
+    }
   },
-  props: ['def'],
+  props: {
+    def: Object
+  },
   data () {
     return {
       input: null
@@ -32,7 +39,10 @@ export default defineComponent({
   },
   validations () {
     return {
-      input: { sameAs: sameAs(this.inglese) }
+      input: {
+        required,
+        sameAs: this.sameAs
+      }
     }
   },
   mounted () {
