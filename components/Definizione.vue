@@ -21,9 +21,7 @@ export default defineComponent({
       $v: useVuelidate({$lazy: true})
     }
   },
-  props: {
-    def: Object
-  },
+  props: ["def", "bus"],
   data () {
     return {
       input: null
@@ -45,11 +43,13 @@ export default defineComponent({
       }
     }
   },
-  mounted () {
-    this.$parent.$on('validate', this.validate)
+  created () {
+    console.log(this.bus)
+    this.bus.$on('validate', this.validate)
   },
   methods: {
     validate () {
+      console.log("called")
       this.$v.$validate()
       this.$emit("validated", this.$v.$error)
     }

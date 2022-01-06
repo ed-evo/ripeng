@@ -1,60 +1,52 @@
 <template>
   <v-container fluid>
-    <v-select
-      v-model="selected"
-      :items="availableGroups"
-      item-value="slug"
-      item-text="title"
-      label="Select Item"
-      multiple
-      clearable
-    >
-      <template v-slot:selection="{ item }">
-        <v-chip>
-          <span>{{ item.title }}</span>
-        </v-chip>
-        <span
-          class="grey--text text-caption"
+    <v-card>
+      <v-card-title>
+        <v-chip-group
+          v-model="selected"
+          center-active
+          mandatory
+          multiple
+          column
         >
-        </span>
-      </template>
-      <template v-slot:prepend-item>
-        <v-list-item
-          ripple
-          @mousedown.prevent
-          @click="selectAll"
-        >
-          <v-list-item-content>
-            <v-list-item-title>
-              Select All
-            </v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-divider class="mt-2"></v-divider>
-      </template>
-    </v-select>
-    <v-row>
-      <v-col class="text-center">
+          <v-chip
+            v-for="item in availableGroups"
+            :key="item.en"
+            filter
+          >
+            <span>{{ item.title }}</span>
+          </v-chip>
+        </v-chip-group>
+      </v-card-title>
+      <v-card-actions>
+        <v-btn @click="selectAll">all</v-btn>
+        <v-btn @click="selectRandom">random</v-btn>
+        <v-btn @click="inverse">inverse</v-btn>
+        <v-btn @click="selected = []">clear</v-btn>
+      </v-card-actions>
+    </v-card>
+    <v-card>
+      {{ corrects }} / {{ errors }}
+      <v-card-text>
 
         <definizione
           ref="definizioni"
           v-for="def in terms"
           :key="def.en"
           :def="def"
-          :bus="$refs.done"
+          :bus="bus"
           v-on:validated="validated"
         ></definizione>
+      </v-card-text>
+      <v-card-actions>
         <v-btn
           ref="done"
           block
-          depressed
-          elevation="7"
-          fab
-          rounded
+          x-large
           @click="validate"
         >Done</v-btn>
-      </v-col>
-    </v-row>
+      </v-card-actions>
+    </v-card>
     <v-snackbar
       v-model="snackbar"
     >
@@ -75,8 +67,9 @@
 </template>
 
 <script lang="ts">
+import Vue from 'vue'
 import Definizione from '~/components/Definizione.vue'
-import { shuffle } from 'lodash'
+import { sample, shuffle } from 'lodash'
 import { defineComponent } from '@vue/composition-api'
 import Def from '~/model/Definizione'
 
@@ -94,42 +87,59 @@ export default defineComponent({
       errors: 1,
       corrects: 0,
       snackbar: false,
-      selected: new Array<string>(),
+      selected: new Array<number>(),
       availableGroups: new Array<TermGroups>(),
-      terms: new Array<Def>()
+      terms: new Array<Def>(),
+      bus: new Vue()
+    }
+  },
+  computed: {
+    keys (): number[] {
+      const groups = <TermGroups[]> this.availableGroups;
+      return Array.from(groups.keys());
     }
   },
   async created () {
     const termgroups: any = await this.$content('terms').only(['slug', 'title']).fetch();
     this.availableGroups = termgroups as TermGroups[];
-    this.selectAll();
+    this.selectRandom();
   },
   methods: {
     validate () {
-      this.$emit('validate');
+      this.bus.$emit('validate');
       this.errors = 0;
       this.corrects = 0;
       this.snackbar = true;
     },
-    validated (isValid: boolean) {
-      console.log("validated", isValid)
+    validated (hasError: boolean) {
       this.$nextTick(() => {
-        if (isValid) {
+        if (hasError) {
           this.corrects = this.corrects + 1;
         } else {
           this.errors = this.errors + 1;
         }
       })
-
     },
     selectAll () {
-      this.selected = this.availableGroups.map(term => term.slug);
+      this.selected = this.availableGroups.map((_term, i) => i);
+    },
+    selectRandom () {
+      this.selected = [<number> sample(this.keys)]
+      console.log(this.selected)
+    },
+    inverse () {
+      if (this.selected.length === this.availableGroups.length) {
+        this.selected = [0]
+      } else {
+        this.selected = this.keys.filter((_, i) => !this.selected.includes(i))
+      }
     }
   },
   watch: {
     async selected(newValue: string[]) {
+      const select = this.selected.map(n => this.availableGroups[n]?.slug)
       const terms: any = await this.$content('terms')
-        .where({ slug: { $in: this.selected }})
+        .where({ slug: { $in: select }})
         .only('terms')
         .fetch()
       this.terms = shuffle(terms.flatMap((page: any) => page.terms))
