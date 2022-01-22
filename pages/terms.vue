@@ -26,7 +26,6 @@
       </v-card-actions>
     </v-card>
     <v-card>
-      {{ corrects }} / {{ errors }}
       <v-card-text>
 
         <definizione
@@ -114,9 +113,9 @@ export default defineComponent({
     validated (hasError: boolean) {
       this.$nextTick(() => {
         if (hasError) {
-          this.corrects = this.corrects + 1;
-        } else {
           this.errors = this.errors + 1;
+        } else {
+          this.corrects = this.corrects + 1;
         }
       })
     },
